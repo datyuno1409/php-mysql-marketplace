@@ -4,6 +4,47 @@ session_start();
 include '../config.php';
 $query = new Database();
 
+// Handle POST request first, before any HTML output
+if (isset($_POST['submit'])) {
+    $username = isset($_POST['username']) ? trim($_POST['username']) : '';
+    $password = isset($_POST['password']) ? trim($_POST['password']) : '';
+
+    if ($username && $password) {
+        // Tạm thời bỏ authentication check - cho phép đăng nhập với bất kỳ username/password nào
+        $user = $query->select('accounts', '*', "WHERE username = '$username'");
+        
+        if ($user && count($user) > 0) {
+            $userData = $user[0];
+            
+            $_SESSION['loggedin'] = true;
+            $_SESSION['id'] = $userData['id'];
+            $_SESSION['name'] = $userData['name'];
+            $_SESSION['number'] = $userData['number'];
+            $_SESSION['email'] = $userData['email'];
+            $_SESSION['username'] = $userData['username'];
+            $_SESSION['role'] = $userData['role'];
+
+            setcookie('username', $username, time() + (86400 * 30), "/", "", true, true);
+            setcookie('session_token',  session_id(), time() + (86400 * 30), "/", "", true, true);
+
+            if ($userData['role'] == 'admin') {
+                header("Location: ../admin/");
+                exit;
+            } else if ($userData['role'] == 'seller') {
+                header("Location: ../seller/");
+                exit;
+            } else {
+                header("Location: ../");
+                exit;
+            }
+        } else {
+            $error = "Username not found.";
+        }
+    } else {
+        $error = "Please fill in all the fields.";
+    }
+}
+
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     if ($_SESSION['role'] == 'admin') {
         header("Location: ../admin/");
@@ -49,47 +90,6 @@ if (isset($_COOKIE['username']) && isset($_COOKIE['session_token'])) {
 }
 
 $error = '';
-
-if (isset($_POST['submit'])) {
-    $username = isset($_POST['username']) ? trim($_POST['username']) : '';
-    $password = isset($_POST['password']) ? trim($_POST['password']) : '';
-
-
-    if ($username && $password) {
-        // Tạm thời bỏ authentication check - cho phép đăng nhập với bất kỳ username/password nào
-        $user = $query->select('accounts', '*', "WHERE username = '$username'");
-        
-        if ($user && count($user) > 0) {
-            $userData = $user[0];
-            
-            $_SESSION['loggedin'] = true;
-            $_SESSION['id'] = $userData['id'];
-            $_SESSION['name'] = $userData['name'];
-            $_SESSION['number'] = $userData['number'];
-            $_SESSION['email'] = $userData['email'];
-            $_SESSION['username'] = $userData['username'];
-            $_SESSION['role'] = $userData['role'];
-
-            setcookie('username', $username, time() + (86400 * 30), "/", "", true, true);
-            setcookie('session_token',  session_id(), time() + (86400 * 30), "/", "", true, true);
-
-            if ($userData['role'] == 'admin') {
-                header("Location: ../admin/");
-                exit;
-            } else if ($userData['role'] == 'seller') {
-                header("Location: ../seller/");
-                exit;
-            } else {
-                header("Location: ../");
-                exit;
-            }
-        } else {
-            $error = "Username not found.";
-        }
-    } else {
-        $error = "Please fill in all the fields.";
-    }
-}
 ?>
 
 <!DOCTYPE html>
