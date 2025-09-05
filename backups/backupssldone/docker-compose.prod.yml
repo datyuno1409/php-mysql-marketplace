@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: marketplace-nginx-prod
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.ssl.conf:/etc/nginx/conf.d/default.conf
+      - ./:/var/www/html
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - php-fpm
+    restart: unless-stopped
+    networks:
+      - marketplace-network-prod
+
+  php-fpm:
+    build: .
+    container_name: marketplace-php-prod
+    volumes:
+      - ./:/var/www/html
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=callmeserein
+      - DB_PASSWORD=Fpt1409!@
+      - DB_NAME=marketplace
+    depends_on:
+      - mysql
+    restart: unless-stopped
+    networks:
+      - marketplace-network-prod
+
+  mysql:
+    image: mysql:8.0
+    container_name: marketplace-mysql-prod
+    environment:
+      MYSQL_ROOT_PASSWORD: Fpt1409!@
+      MYSQL_DATABASE: marketplace
+      MYSQL_USER: callmeserein
+      MYSQL_PASSWORD: Fpt1409!@
+    volumes:
+      - mysql_data_prod:/var/lib/mysql
+      - ./database.sql:/docker-entrypoint-initdb.d/database.sql
+    ports:
+      - "3307:3306"
+    restart: unless-stopped
+    networks:
+      - marketplace-network-prod
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: marketplace-phpmyadmin-prod
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: callmeserein
+      PMA_PASSWORD: Fpt1409!@
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql
+    restart: unless-stopped
+    networks:
+      - marketplace-network-prod
+
+volumes:
+  mysql_data_prod:
+
+networks:
+  marketplace-network-prod:
+    driver: bridge

@@ -15,7 +15,7 @@ class Database
 
     public function __construct()
     {
-        $servername = $_ENV['DB_HOST'] ?? "103.9.205.28";
+        $servername = $_ENV['DB_HOST'] ?? "mysql";
         $username = $_ENV['DB_USER'] ?? "callmeserein";
         $password = $_ENV['DB_PASSWORD'] ?? "Fpt1409!@";
         $dbname = $_ENV['DB_NAME'] ?? "marketplace";

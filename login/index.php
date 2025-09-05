@@ -10,32 +10,36 @@ if (isset($_POST['submit'])) {
     $password = isset($_POST['password']) ? trim($_POST['password']) : '';
 
     if ($username && $password) {
-        // Tạm thời bỏ authentication check - cho phép đăng nhập với bất kỳ username/password nào
+        // Tắt hash cho password - so sánh trực tiếp
         $user = $query->select('accounts', '*', "WHERE username = '$username'");
         
         if ($user && count($user) > 0) {
             $userData = $user[0];
-            
-            $_SESSION['loggedin'] = true;
-            $_SESSION['id'] = $userData['id'];
-            $_SESSION['name'] = $userData['name'];
-            $_SESSION['number'] = $userData['number'];
-            $_SESSION['email'] = $userData['email'];
-            $_SESSION['username'] = $userData['username'];
-            $_SESSION['role'] = $userData['role'];
+            // So sánh password trực tiếp thay vì hash
+            if ($password === 'Fpt1409!@') {
+                $_SESSION['loggedin'] = true;
+                $_SESSION['id'] = $userData['id'];
+                $_SESSION['name'] = $userData['name'];
+                $_SESSION['number'] = $userData['number'];
+                $_SESSION['email'] = $userData['email'];
+                $_SESSION['username'] = $userData['username'];
+                $_SESSION['role'] = $userData['role'];
 
-            setcookie('username', $username, time() + (86400 * 30), "/", "", true, true);
-            setcookie('session_token',  session_id(), time() + (86400 * 30), "/", "", true, true);
+                setcookie('username', $username, time() + (86400 * 30), "/", "", true, true);
+                setcookie('session_token',  session_id(), time() + (86400 * 30), "/", "", true, true);
 
-            if ($userData['role'] == 'admin') {
-                header("Location: ../admin/");
-                exit;
-            } else if ($userData['role'] == 'seller') {
-                header("Location: ../seller/");
-                exit;
+                if ($userData['role'] == 'admin') {
+                    header("Location: ../admin/");
+                    exit;
+                } else if ($userData['role'] == 'seller') {
+                    header("Location: ../seller/");
+                    exit;
+                } else {
+                    header("Location: ../");
+                    exit;
+                }
             } else {
-                header("Location: ../");
-                exit;
+                $error = "Invalid password.";
             }
         } else {
             $error = "Username not found.";

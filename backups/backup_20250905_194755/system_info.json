@@ -1,0 +1,9 @@
+{
+  "docker_ps": "Error: Command '['plink', '-ssh', 'root@103.9.205.28', '-pw', 'Next-Step@2310', '-batch', 'docker ps -a']' returned non-zero exit status 1.",
+  "docker_images": "Error: Command '['plink', '-ssh', 'root@103.9.205.28', '-pw', 'Next-Step@2310', '-batch', 'docker images']' returned non-zero exit status 1.",
+  "docker_volumes": "Error: Command '['plink', '-ssh', 'root@103.9.205.28', '-pw', 'Next-Step@2310', '-batch', 'docker volume ls']' returned non-zero exit status 1.",
+  "docker_networks": "Error: Command '['plink', '-ssh', 'root@103.9.205.28', '-pw', 'Next-Step@2310', '-batch', 'docker network ls']' returned non-zero exit status 1.",
+  "disk_usage": "Error: Command '['plink', '-ssh', 'root@103.9.205.28', '-pw', 'Next-Step@2310', '-batch', 'df -h']' returned non-zero exit status 1.",
+  "memory_info": "Error: Command '['plink', '-ssh', 'root@103.9.205.28', '-pw', 'Next-Step@2310', '-batch', 'free -h']' returned non-zero exit status 1.",
+  "system_info": "Error: Command '['plink', '-ssh', 'root@103.9.205.28', '-pw', 'Next-Step@2310', '-batch', 'uname -a']' returned non-zero exit status 1."
+}

@@ -1,0 +1,8 @@
+{
+  "timestamp": "20250905_195007",
+  "server_ip": "103.9.205.28",
+  "backup_path": "backups\\backup_20250905_195007",
+  "success_tasks": 4,
+  "total_tasks": 5,
+  "status": "partial"
+}
