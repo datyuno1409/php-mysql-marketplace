@@ -45,7 +45,7 @@ services:
       - mysql_data_prod:/var/lib/mysql
       - ./database.sql:/docker-entrypoint-initdb.d/database.sql
     ports:
-      - "3306:3306"
+      - "3307:3306"
     restart: unless-stopped
     networks:
       - marketplace-network
