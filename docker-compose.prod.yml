@@ -58,7 +58,7 @@ services:
       PMA_USER: callmeserein
       PMA_PASSWORD: Fpt1409!@
     ports:
-      - "8080:80"
+      - "8081:80"
     depends_on:
       - mysql
     restart: unless-stopped
