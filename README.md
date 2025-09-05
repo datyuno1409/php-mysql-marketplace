@@ -30,32 +30,7 @@ This is an **online marketplace platform** built using **PHP and MySQL**, where 
 ### 🏆 **Admin**  
 ![⚙ Admin Panel](./src/images/admin.png?raw=true)
 - 🔹 Manages the entire marketplace  
-- 🔹 Can view and manage all users and their products  
-- 🔹 Can update or delete any listings  
-- 🔹 Oversees order management and resolves issues  
-- 🔹 Can **block** users if needed  
-
-### 🛒 **Seller**  
-![🛍 Seller Panel](./src/images/seller.png?raw=true)
-- 🔹 Can **list** products for sale and manage their listings  
-- 🔹 Can view and update their **orders**  
-- 🔹 Manages their **profile and product details**  
-
-### 👤 **User (Customer)**  
-![🛍 User Panel](./src/images/user.png?raw=true)
-- 🔹 Can **browse products**, add them to the cart, and **purchase**  
-- 🔹 Can create and manage their **profile**  
-- 🔹 Can view **order history** and track orders  
-
----
-
-## ⚡ **Installation Guide**  
-
-To set up the **PHP-MySQL Marketplace**, follow these steps:  
-
-### 1️⃣ **Clone the Repository**  
-```bash
-git clone https://github.com/serein/php-mysql-marketplace.git
+- 🔹 Can view and datyuno1409/php-mysql-marketplace.git
 ```
 
 ### 2️⃣ **Navigate to the Project Directory**  
