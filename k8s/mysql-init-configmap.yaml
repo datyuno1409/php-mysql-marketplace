@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-init-script
+  namespace: marketplace
+data:
+  database.sql: |
+    CREATE DATABASE IF NOT EXISTS marketplace;
+
+    USE marketplace;
+
+    CREATE TABLE accounts (
+      id INT(11) NOT NULL AUTO_INCREMENT,
+      name VARCHAR(30) NOT NULL,
+      number VARCHAR(20) NOT NULL,
+      email VARCHAR(255) NOT NULL,
+      username VARCHAR(255) NOT NULL,
+      password VARCHAR(255) NOT NULL,
+      role VARCHAR(20) NOT NULL DEFAULT 'user',
+      status ENUM('active', 'blocked') NOT NULL DEFAULT 'active',
+      registration_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (id)
+    );
+
+    CREATE TABLE categories (
+      id INT(11) NOT NULL AUTO_INCREMENT,
+      category_name VARCHAR(255) NOT NULL,
+      PRIMARY KEY (id)
+    );
+
+    CREATE TABLE products (
+      id INT(11) NOT NULL AUTO_INCREMENT,
+      name VARCHAR(30) DEFAULT NULL,
+      category_id INT(11) DEFAULT NULL,
+      seller_id INT(11) DEFAULT NULL,
+      price_old INT(11) DEFAULT NULL,
+      price_current INT(11) DEFAULT NULL,
+      description VARCHAR(2000) DEFAULT NULL,
+      rating DECIMAL(2,1) DEFAULT NULL,
+      quantity INT(11) DEFAULT NULL,
+      added_to_site TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (id),
+      FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,
+      FOREIGN KEY (seller_id) REFERENCES accounts(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE product_images (
+      id INT(11) NOT NULL AUTO_INCREMENT,
+      product_id INT(11) DEFAULT NULL,
+      image_url VARCHAR(255) DEFAULT NULL,
+      PRIMARY KEY (id),
+      FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE cart (
+      id INT(11) NOT NULL AUTO_INCREMENT,
+      user_id INT(11) DEFAULT NULL,
+      product_id INT(11) DEFAULT NULL,
+      number_of_products INT(3) NOT NULL,
+      PRIMARY KEY (id),
+      FOREIGN KEY (user_id) REFERENCES accounts(id) ON DELETE CASCADE,
+      FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE wishes (
+      id INT(11) NOT NULL AUTO_INCREMENT,
+      user_id INT(11) DEFAULT NULL,
+      product_id INT(11) DEFAULT NULL,
+      PRIMARY KEY (id),
+      FOREIGN KEY (user_id) REFERENCES accounts(id) ON DELETE CASCADE,
+      FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+    );
+
+    INSERT INTO accounts (id, name, number, email, username, password, role, status, registration_date) VALUES
+    (1, 'Serein', '+998997799333', 'serein@gmail.com', 'serein', '7fdaa4b045c8ff402b4459e51a2583072782eae0705b48c42998913bbf183301', 'admin', 'active', '2024-05-14 11:17:25'),
+    (2, 'seller', '+998997733999', 'seller@gmail.com', 'seller', '7fdaa4b045c8ff402b4459e51a2583072782eae0705b48c42998913bbf183301', 'seller', 'active', '2024-05-14 11:17:25'),
+    (3, 'user', '+998993399777', 'user@gmail.com', 'user', '7fdaa4b045c8ff402b4459e51a2583072782eae0705b48c42998913bbf183301', 'user', 'active', '2024-05-14 11:17:25'),
+    (4, 'userAKA', '+998993399177', 'userAKA@gmail.com', 'userAKA', '52be5ff91284c65bac56f280df55f797a5c505f7ef66317ff358e34791507027', 'user', 'active', '2024-05-14 11:17:25');
+
+    INSERT INTO categories (id, category_name) VALUES
+    (1, 'Phone'),
+    (2, 'Tablet'),
+    (3, 'Computer'),
+    (4, 'Television');

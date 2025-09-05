@@ -6,10 +6,10 @@ class Database
 
     public function __construct()
     {
-        $servername = "103.9.205.28";
-        $username = "callmeserein";
-        $password = "Fpt1409!@";
-        $dbname = "marketplace";
+        $servername = $_ENV['DB_HOST'] ?? "103.9.205.28";
+        $username = $_ENV['DB_USER'] ?? "callmeserein";
+        $password = $_ENV['DB_PASSWORD'] ?? "Fpt1409!@";
+        $dbname = $_ENV['DB_NAME'] ?? "marketplace";
 
         $this->conn = new mysqli($servername, $username, $password, $dbname);
 
