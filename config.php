@@ -1,11 +1,13 @@
 <?php
-// Set session configuration
-ini_set('session.save_path', '/var/lib/php/sessions');
-ini_set('session.gc_maxlifetime', 1440);
-ini_set('session.cookie_lifetime', 0);
-ini_set('session.use_cookies', 1);
-ini_set('session.use_only_cookies', 1);
-ini_set('session.cookie_httponly', 1);
+// Set session configuration before session_start()
+if (session_status() === PHP_SESSION_NONE) {
+    ini_set('session.save_path', '/var/lib/php/sessions');
+    ini_set('session.gc_maxlifetime', 1440);
+    ini_set('session.cookie_lifetime', 0);
+    ini_set('session.use_cookies', 1);
+    ini_set('session.use_only_cookies', 1);
+    ini_set('session.cookie_httponly', 1);
+}
 
 class Database
 {
