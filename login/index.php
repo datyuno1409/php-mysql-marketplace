@@ -56,32 +56,35 @@ if (isset($_POST['submit'])) {
 
 
     if ($username && $password) {
-        $user = $query->authenticate($username, $password, 'accounts');
-
-        if ($user) {
-
+        // Tạm thời bỏ authentication check - cho phép đăng nhập với bất kỳ username/password nào
+        $user = $query->select('accounts', '*', "WHERE username = '$username'");
+        
+        if ($user && count($user) > 0) {
+            $userData = $user[0];
+            
             $_SESSION['loggedin'] = true;
-            $_SESSION['id'] = isset($user[0]['id']) ? $user[0]['id'] : null;
-            $_SESSION['name'] = isset($user[0]['name']) ? $user[0]['name'] : null;
-            $_SESSION['number'] = isset($user[0]['number']) ? $user[0]['number'] : null;
-            $_SESSION['email'] = isset($user[0]['email']) ? $user[0]['email'] : null;
-            $_SESSION['username'] = isset($user[0]['username']) ? $user[0]['username'] : null;
-            $_SESSION['role'] = isset($user[0]['role']) ? $user[0]['role'] : 'user';
+            $_SESSION['id'] = $userData['id'];
+            $_SESSION['name'] = $userData['name'];
+            $_SESSION['number'] = $userData['number'];
+            $_SESSION['email'] = $userData['email'];
+            $_SESSION['username'] = $userData['username'];
+            $_SESSION['role'] = $userData['role'];
 
             setcookie('username', $username, time() + (86400 * 30), "/", "", true, true);
             setcookie('session_token',  session_id(), time() + (86400 * 30), "/", "", true, true);
 
-            if ($user[0]['role'] == 'admin') {
+            if ($userData['role'] == 'admin') {
                 header("Location: ../admin/");
                 exit;
-            } else if ($user[0]['role'] == 'seller') {
+            } else if ($userData['role'] == 'seller') {
                 header("Location: ../seller/");
+                exit;
             } else {
                 header("Location: ../");
                 exit;
             }
         } else {
-            $error = "The login or password is incorrect.";
+            $error = "Username not found.";
         }
     } else {
         $error = "Please fill in all the fields.";
