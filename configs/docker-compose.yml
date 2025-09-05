@@ -8,7 +8,7 @@ services:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      - .:/var/www/html
+      - ..:/var/www/html
     depends_on:
       - php-fpm
     networks:
@@ -18,7 +18,7 @@ services:
     build: .
     container_name: marketplace-php
     volumes:
-      - .:/var/www/html
+      - ..:/var/www/html
     environment:
       - DB_HOST=mysql
       - DB_USER=callmeserein
@@ -39,7 +39,7 @@ services:
       MYSQL_PASSWORD: Fpt1409!@
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./database.sql:/docker-entrypoint-initdb.d/database.sql
+      - ../database/database.sql:/docker-entrypoint-initdb.d/database.sql
     ports:
       - "3306:3306"
     networks:
