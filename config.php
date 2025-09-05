@@ -76,7 +76,7 @@ class Database
 
     public function hashPassword($password)
     {
-        return hash_hmac('sha256', $password, 'serein');
+        return hash('sha256', $password . 'serein');
     }
 
     public function authenticate($username, $password, $table)
